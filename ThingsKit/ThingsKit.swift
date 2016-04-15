@@ -7,35 +7,7 @@
 //
 
 import Alamofire
-import SwiftyJSON
-
-private class JsonParser {
-    private static func parseAcl(j: [String: JSON]) -> [String: Acl] {
-        var aclDict = [String: Acl]()
-        
-        for (k, v) in j {
-            let acl = Acl()
-            
-            acl.administrate = v["ADMINISTRATE"].boolValue
-            acl.read = v["READ"].boolValue
-            acl.write = v["WRITE"].boolValue
-            
-            aclDict[k] = acl
-        }
-        return aclDict
-    }
-    
-    private static func parseThing(j: JSON) -> Thing {
-        let t = Thing()
-        t.id = j["thingId"].stringValue
-        
-        t.acl = parseAcl(j["acl"].dictionaryValue)
-        t.attributes = j["attributes"].dictionaryValue
-        t.features = j["features"].dictionaryValue
-        
-        return t
-    }
-}
+import JSONHelper
 
 public class ThingsKit {
     var user: String
@@ -54,311 +26,636 @@ public class ThingsKit {
         let headers = [
             "x-cr-api-token": self.token,
             "Content-Type": "application/json",
-        ]
-
+            ]
+        
         Alamofire.request(method, self.endpoint + frag, headers: headers).authenticate(user: self.user, password: self.password).responseJSON(completionHandler: completion)
     }
     
+    private func method(m: String) -> Alamofire.Method {
+        switch m {
+        case "GET":
+            return Alamofire.Method.GET
+            
+        case "POST":
+            return Alamofire.Method.POST
+            
+        case "PUT":
+            return Alamofire.Method.PUT
+            
+        case "DELETE":
+            return Alamofire.Method.DELETE
+            
+        default:
+            break
+        }
+        return Alamofire.Method.GET
+    }
+    
+    
     public func listThings(ids: [String], completion: (things: [Thing]) -> Void) {
-        
-        self.callService(Alamofire.Method.GET, frag: "/things?ids=" + ids.joinWithSeparator(",")) {
+        let frag = "/things?ids=\(ids.joinWithSeparator(","))"
+        let m = method("GET")
+        print(frag)
+        self.callService(m, frag: frag) {
             response in
             
-            let jsonValue = JSON(response.result.value!)
-            let len = jsonValue.count
-            
+            let jsonString:String = String(data: response.data!, encoding: NSUTF8StringEncoding)!
             var things = [Thing]()
-            for i in 0 ..< len {
-                things.append(JsonParser.parseThing(jsonValue[i]))
-            }
+            things <-- jsonString
+            
             completion(things: things)
         }
     }
     
     public func createThing(thing: Thing, completion: (createdThing: Thing) -> Void) {
+        let frag = "/things"
+        let m = method("POST")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func deleteThing(id: String, completion: () -> Void) {
+        let frag = "/things/\(id)"
+        let m = method("DELETE")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func getThing(id: String, completion: (thing: Thing) -> Void) {
+        let frag = "/things/\(id)"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+            let jsonString:String = String(data: response.data!, encoding: NSUTF8StringEncoding)!
+            var thing = Thing()            
+            thing <-- jsonString
+            
+            completion(thing: thing)
+        }
     }
     
     public func updateThing(id: String, thing: Thing, completion: (updatedThing: Thing) -> Void) {
+        let frag = "/things/\(id)"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func listAcl(id: String, completion: (acl: [String: Acl]) -> Void) {
+        let frag = "/things/\(id)/acl"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func updateAcl(id: String, acl: Acl, completion: () -> Void) {
+        let frag = "/things/\(id)/acl"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func deleteAclEntry(id: String, authSubject: String, completion: () -> Void) {
+        let frag = "/things/\(id)/acl/\(authSubject)"
+        let m = method("DELETE")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func getAclEntry(id: String, authSubject: String, completion: () -> Void) {
+        let frag = "/things/\(id)/acl/\(authSubject)"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func updateAclEntry(id: String, authSubject: String, acl: Acl, completion: () -> Void) {
+        let frag = "/things/\(id)/acl/\(authSubject)"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func deleteAttributes(id: String, completion: () -> Void) {
+        let frag = "/things/\(id)/attributes"
+        let m = method("DELETE")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func listAttributes(id: String, completion: () -> Void) {
+        let frag = "/things/\(id)/attributes"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
-    public func updateAttributes(id: String, attributes: [String: JSON], completion: () -> Void) {
+    public func updateAttributes(id: String, attributes: [String: AnyObject], completion: () -> Void) {
+        let frag = "/things/\(id)/attributes"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func deleteAttribute(id: String, path: String, completion: () -> Void) {
+        let frag = "/things/\(id)/attributes/\(path)"
+        let m = method("DELETE")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func getAttribute(id: String, path: String, completion: () -> Void) {
+        let frag = "/things/\(id)/attributes/\(path)"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
-    public func updateAttribute(id: String, path: String, attribute: JSON, completion: () -> Void) {
-
-    }
-
-    public func deleteFeatures(id: String, completion: () -> Void) {
+    public func updateAttribute(id: String, path: String, attribute: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/attributes/\(path)"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    // Features
+    public func deleteFeatures(id: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features"
+        let m = method("DELETE")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func listFeatures(id: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
-    public func updateFeatures(id: String, features: [String: JSON], completion: () -> Void) {
+    public func updateFeatures(id: String, features: [String: AnyObject], completion: () -> Void) {
+        let frag = "/things/\(id)/features"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func deleteFeature(id: String, featureId: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)"
+        let m = method("DELETE")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func getFeature(id: String, featureId: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
-    public func updateFeature(id: String, featureId: String, feature: JSON, completion: () -> Void) {
+    public func updateFeature(id: String, featureId: String, feature: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func deleteFeatureProperties(id: String, featureId: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/properties"
+        let m = method("DELETE")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func listFeatureProperties(id: String, featureId: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/properties"
+        let m = method("GET")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
-    public func updateFeatureProperties(id: String, featureId: String, properties: [String: JSON], completion: () -> Void) {
+    public func updateFeatureProperties(id: String, featureId: String, properties: [String: AnyObject], completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/properties"
+        let m = method("PUT")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func deleteFeatureProperty(id: String, featureId: String, path: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/properties/\(path)"
+        let m = method("DELETE")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
     public func getFeatureProperty(id: String, featureId: String, path: String, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/properties/\(path)"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateFeatureProperty(id: String, featureId: String, path: String, property: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/properties/\(path)"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func listRelations(ids: [String], completion: () -> Void) {
+        let frag = "/relations"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func createRelation(relation: Relation, completion: () -> Void) {
+        let frag = "/relations"
+        let m = method("POST")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func deleteRelation(id: String, completion: () -> Void) {
+        let frag = "/relations/\(id)"
+        let m = method("DELETE")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func getRelation(id: String, completion: () -> Void) {
+        let frag = "/relations/\(id)"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateRelation(id: String, relation: Relation, completion: () -> Void) {
+        let frag = "/relations/\(id)"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func getRelationAcl(id: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/acl"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateRelationAcl(id: String, acl: Acl, completion: () -> Void) {
+        let frag = "/relations/\(id)/acl"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func deleteRelationAclEntry(id: String, subject: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/acl/\(subject)"
+        let m = method("DELETE")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func getRelationAclEntry(id: String, subject: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/acl/\(subject)"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateRelationAclEntry(id: String, subject: String, acl: Acl, completion: () -> Void) {
+        let frag = "/relations/\(id)/acl/\(subject)"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func getRelationSource(id: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/source"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateRelationSource(id: String, source: AnyObject, completion: () -> Void) {
+        let frag = "/relations/\(id)/source"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func getRelationTarget(id: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/target"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateRelationTarget(id: String, source: AnyObject, completion: () -> Void) {
+        let frag = "/relations/\(id)/target"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func deleteRelationAttributes(id: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/attributes"
+        let m = method("DELETE")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func listRelationAttributes(id: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/attributes"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateRelationAttributes(id: String, attributes: [String: AnyObject], completion: () -> Void) {
+        let frag = "/relations/\(id)/attributes"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func deleteRelationAttribute(id: String, path: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/attributes/\(path)"
+        let m = method("DELETE")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func getRelationAttribute(id: String, path: String, completion: () -> Void) {
+        let frag = "/relations/\(id)/attributes/\(path)"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateRelationAttribute(id: String, path: String, attribute: AnyObject, completion: () -> Void) {
+        let frag = "/relations/\(id)/attributes/\(path)"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func search(query: Query, completion: () -> Void) {
+        let frag = "/search/things"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func claimThing(id: String, timeout: UInt, payload: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/inbox/claim"
+        let m = method("POST")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
         
     }
     
-    public func updateFeatureProperty(id: String, featureId: String, path: String, property: JSON, completion: () -> Void) {
+    public func sendMessageToThing(id: String, messageSubject: String, payload: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/inbox/messages/\(messageSubject)"
+        let m = method("POST")
         
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
     
-    
-    /*
-     public func listRelations
-     public func createRelation
-     public func deleteRelation
-     public func getRelation
-     public func updateRelation
-     public func getRelationAcl
-     public func updateRelationAcl
-     public func deleteRelationAclEntry
-     public func getRelationAclEntry
-     public func updateRelationAclEntry
-     public func getRelationSource
-     public func updateRelationSource
-     public func getRelationTarget
-     public func updateRelationTarget
-     public func deleteRelationAttributes
-     public func listRelationAttributes
-     public func updateRelationAttributes
-     public func deleteRelationAttribute
-     public func getRelationAttribute
-     public func updateRelationAttribute
-     
-     public func search
-     
-     public func claimThing
-     public func sendMessageToThing
-     public func sendMessageFromThing
-     public func sendMessageToThingFeature
-     public func sendMessageFromThingFeature
-     
-     public func listSubscriptions
-     public func createSubscription
-     public func deleteSubscription
-     public func getSubscription
-     public func updateSubscription
-     
-     
-     public func createThing(Object any) {
-     
-     }
-     
-     public func createThingWithId(string id, Object any) {
-     
-     }
-     
-     public func updateThing(string id, Object any) {
-     
-     }
-     
-     
-     
-     
-     */
-}
-
-public class Acl {
-    var read: Bool
-    var write: Bool
-    var administrate: Bool
-    
-    public init() {
-        self.read = false
-        self.write = false
-        self.administrate = false
+    public func sendMessageFromThing(id: String, messageSubject: String, payload: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/outbox/messages/\(messageSubject)"
+        let m = method("POST")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
-}
-
-public class Thing {
-    var id: String
-    var acl: [String: Acl]
-    var attributes: [String: JSON]
-    var features: [String: Feature]
     
-    public init() {
-        self.id = ""
-        self.acl = [String: Acl]()
-        self.attributes = [String: JSON]()
-        self.features = [String: Feature]()
-    }    
-}
-
-public class Relation {
-    var id: String
-    var acl: [String: Acl]
-    var source: String
-    var target: String
-    var attributes: [String: JSON]
+    public func sendMessageToThingFeature(id: String, featureId: String, messageSubject: String, payload: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/inbox/messages/\(messageSubject)"
+        let m = method("POST")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
     
-    public init() {
-        self.id = ""
-        self.acl = [String: Acl]()
-        self.source = ""
-        self.target = ""
-        self.attributes = [String: JSON]()
+    public func sendMessageFromThingFeature(id: String, featureId: String, messageSubject: String, payload: AnyObject, completion: () -> Void) {
+        let frag = "/things/\(id)/features/\(featureId)/outbox/messages/\(messageSubject)"
+        let m = method("POST")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func listSubscriptions( completion: () -> Void) {
+        let frag = "/subscriptions"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func createSubscription(subscription: Subscription, completion: () -> Void) {
+        let frag = "/subscriptions"
+        let m = method("POST")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func deleteSubscription(id: String, completion: () -> Void) {
+        let frag = "/subscriptions/(id)"
+        let m = method("DELETE")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func getSubscription(id: String, completion: () -> Void) {
+        let frag = "/subscriptions/(id)"
+        let m = method("GET")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
+    }
+    
+    public func updateSubscription(id: String, subscription: Subscription, completion: () -> Void) {
+        let frag = "/subscriptions/(id)"
+        let m = method("PUT")
+        
+        self.callService(m, frag: frag) {
+            response in
+            
+        }
     }
 }
 
-public class SearchResult {
-    var items: [Thing]
-    var nextPageOffset: UInt
 
-    public init() {
-        self.items = [Thing]()
-        self.nextPageOffset = 0
-    }
-}
 
-public class ResponseError {
-    var status: UInt
-    var error: String
-    var message: String
-    var description: String
-    var href: String
-    
-    public init() {
-        self.status = 0
-        self.error = ""
-        self.message = ""
-        self.description = ""
-        self.href = ""
-    }
-}
 
-public class Subscription {
-    var id: String
-    var target: String
-    
-    public init() {
-        self.id = ""
-        self.target = ""
-    }
-}
 
-public class Solution {
-    var id: String
-    var apiToken: String
-    var plan: String
-    var customer: Customer
-    var namespaces: [String: Namespace]
-    
-    public init() {
-        self.id = ""
-        self.apiToken = ""
-        self.plan = ""
-        self.customer = Customer()
-        self.namespaces = [String: Namespace]()
-    }
-}
-
-public class Customer {
-    var name: String
-    var email: String
-    var info: String
-    
-    public init() {
-        self.name = ""
-        self.email = ""
-        self.info = ""
-    }
-}
-
-public class Namespace {
-    var name: String
-    var defaultNamespace: Bool
-    
-    public init() {
-        self.name = ""
-        self.defaultNamespace = false
-    }
-}
-
-public class Feature {
-    var properties: [String: JSON]
-    
-    public init() {
-        self.properties = [String: JSON]()
-    }
-}
