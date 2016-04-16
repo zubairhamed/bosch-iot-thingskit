@@ -12,7 +12,7 @@ import ObjectMapper
 
 public class SearchResult: Mappable {
     var items: [Thing]?
-    var nextPageOffset: UInt?
+    var nextPageOffset: Int?
     
     public init() {
         

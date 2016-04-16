@@ -23,31 +23,18 @@ public class ThingsKit {
     }
     
     private func callService(method: String, frag: String, body: String, completion: Response<AnyObject, NSError> -> Void) {
-//        let headers = [
-//            "x-cr-api-token": self.token,
-//            "Content-Type": "application/json",
-//            ]
-        print("A")
+
         let url = self.endpoint + frag
-        print("B")
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
-        print("C")
         request.HTTPMethod = method
-        print("D")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        print("E")
         request.setValue(self.token, forHTTPHeaderField: "x-cr-api-token")
-        print("F")
+        
         if body != "" {
-            print("encoding body")
             request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding)
-            print("G")
         }
-        print("H")
 
         Alamofire.request(request).authenticate(user: self.user, password: self.password).responseJSON(completionHandler: completion)
-        print("I")
-//        Alamofire.request(method, self.endpoint + frag, headers: headers).authenticate(user: self.user, password: self.password).responseJSON(completionHandler: completion)
     }
     
     public func listThings(ids: [String], completion: (things: [Thing]) -> Void) {
@@ -55,13 +42,10 @@ public class ThingsKit {
         self.callService("GET", frag: frag, body: "") {
             response in
             
-            print("callSerivce")
-            
             let jsonString:String = String(data: response.data!, encoding: NSUTF8StringEncoding)!
-            var things = [Thing]()
-//            things <-- jsonString
+            let things = Mapper<Thing>().mapArray(jsonString)
             
-            completion(things: things)
+            completion(things: things!)
         }
     }
     
