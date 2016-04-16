@@ -15,7 +15,7 @@ public class ThingsKit {
     var token: String
     var endpoint: String
     
-    public init(user: String, password: String, token: String, endpoint: String) {
+    public init(user: String, password: String, token: String, endpoint: String = "https://things.apps.bosch-iot-cloud.com/cr/1") {
         self.user = user
         self.password = password
         self.token = token
@@ -23,7 +23,6 @@ public class ThingsKit {
     }
     
     private func callService(method: String, frag: String, body: String, completion: Response<AnyObject, NSError> -> Void) {
-
         let url = self.endpoint + frag
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = method
@@ -53,8 +52,6 @@ public class ThingsKit {
         let frag = "/things"
         let json = Mapper().toJSONString(thing)
         
-        print("Outgoing JSON", json)
-        
         self.callService("POST", frag: frag, body: json!) {
             response in            
             
@@ -71,6 +68,7 @@ public class ThingsKit {
         self.callService("DELETE", frag: frag, body: "") {
             response in
             
+            completion()
         }
     }
     

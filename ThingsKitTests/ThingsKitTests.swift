@@ -7,11 +7,12 @@
 //
 
 import XCTest
+import Alamofire
 @testable import ThingsKit
 
 class ThingsKitTests: XCTestCase {
-    var tk: ThingsKit = ThingsKit(user: "xxx", password: "xxx", token: "xxx", endpoint: "https://things.apps.bosch-iot-cloud.com/cr/1")
-    
+    var tk: ThingsKit = ThingsKit(user: "xx", password: "xx", token: "xx")
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -21,28 +22,77 @@ class ThingsKitTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    func testThings() {
-        let expect = expectationWithDescription("things")
         
-        self.tk.listThings([":b583fcbb-e520-42e1-837b-803d00188ae1"]) {
-            (things: [Thing]) in
-            expect.fulfill()
+    func testThingsServices() {
+        var exp: XCTestExpectation = XCTestExpectation()
+        
+        var things = [Thing]()
+        var thingsIds = [String]()
+        let tc = 5
+        
+        // Create things
+        for _ in 0..<tc {
+            exp = expectationWithDescription("ThingsCreate")
+            tk.createThing(Thing(), completion: { (createdThing) in
+                XCTAssertNotNil(createdThing)
+                things.append(createdThing)
+                thingsIds.append(createdThing.thingId!)
+                exp.fulfill()
+            })
+            waitForExpectationsWithTimeout(Double(tc) * 5.0, handler: nil)
         }
-        sleep(5)
+        XCTAssertEqual(things.count, tc)
         
-        self.tk.getThing(":b583fcbb-e520-42e1-837b-803d00188ae1") { (thing) in
-            print(thing)
+        // List things
+        exp = expectationWithDescription("ThingsList")
+        
+        tk.listThings(thingsIds) { (things) in
+            XCTAssertEqual(things.count, tc)
+            exp.fulfill()
         }
-        sleep(5)
+        waitForExpectationsWithTimeout(5.0, handler: nil)
         
-        self.waitForExpectationsWithTimeout(30) { error in
-            XCTAssertNil(error, "Something went horribly wrong")
+        // Get Thing
+        for i in 0..<tc {
+            let id = thingsIds[i]
+            exp = expectationWithDescription("ThingsCreate")
+            tk.getThing(id, completion: { (thing) in
+                XCTAssertEqual(thing.thingId, id)
+                exp.fulfill()
+            })
+            waitForExpectationsWithTimeout(Double(tc) * 5.0, handler: nil)
         }
         
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Update Thing
+        
+        // Delete Thing
+        for i in 0..<tc {
+            let id = thingsIds[i]
+            exp = expectationWithDescription("ThingsDelete")
+            tk.deleteThing(id, completion: { 
+                exp.fulfill()
+            })
+            waitForExpectationsWithTimeout(Double(tc) * 5.0, handler: nil)
+        }
+        
+        // List again, assert 0 size
+        exp = expectationWithDescription("ThingsListAfterDelete")
+        
+        tk.listThings(thingsIds) { (things) in
+            XCTAssertEqual(things.count, 0)
+            exp.fulfill()
+        }
+        waitForExpectationsWithTimeout(5.0, handler: nil)
     }
+    
+//    func testThingsAcl() {}
+//    func testThingsAttributes() {}
+//    func testFeatures() {}
+//    func testRelations() {}
+//    func testSearch() {}
+//    func testMessages() {}
+//    func testSubscriptions() {}
+//    func testSolutions() {}
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
