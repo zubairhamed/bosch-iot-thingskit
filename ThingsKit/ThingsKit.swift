@@ -85,12 +85,19 @@ public class ThingsKit {
         }
     }
     
-    public func updateThing(id: String, thing: Thing, completion: (updatedThing: Thing) -> Void) {
+    public func updateThing(id: String, thing: Thing, completion: (success: Bool) -> Void) {
         let frag = "/things/\(id)"
+        let json = Mapper().toJSONString(thing)
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.callService("PUT", frag: frag, body: json!) {
             response in
             
+            var success = false
+            if response.response?.statusCode == 204 {
+                success = true
+            }
+            
+            completion(success: success)
         }
     }
     

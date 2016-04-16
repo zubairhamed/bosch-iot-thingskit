@@ -11,7 +11,7 @@ import Alamofire
 @testable import ThingsKit
 
 class ThingsKitTests: XCTestCase {
-    var tk: ThingsKit = ThingsKit(user: "xx", password: "xx", token: "xx")
+     var tk: ThingsKit = ThingsKit(user: "xx", password: "xx", token: "xx")
 
     override func setUp() {
         super.setUp()
@@ -64,6 +64,21 @@ class ThingsKitTests: XCTestCase {
         }
         
         // Update Thing
+        for i in 0..<tc {
+            let id = thingsIds[i]
+            exp = expectationWithDescription("ThingsUpdate")
+            let t = things[i]
+            t.attributes!["updated"] = true
+            self.tk.updateThing(id, thing: t, completion: { (success) in
+                XCTAssertTrue(success)
+                
+                self.tk.getThing(id, completion: { (thing) in
+                    XCTAssertEqual(thing.attributes!["updated"] as? Bool, true)
+                    exp.fulfill()
+                })
+            })
+            waitForExpectationsWithTimeout(Double(tc) * 5.0, handler: nil)
+        }
         
         // Delete Thing
         for i in 0..<tc {

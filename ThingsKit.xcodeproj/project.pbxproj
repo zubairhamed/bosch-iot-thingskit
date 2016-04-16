@@ -16,7 +16,7 @@
 		3DEEEF041CC101EC0062F744 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF031CC101EC0062F744 /* Customer.swift */; };
 		3DEEEF061CC101F90062F744 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF051CC101F90062F744 /* Solution.swift */; };
 		3DEEEF081CC102070062F744 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF071CC102070062F744 /* Subscription.swift */; };
-		3DEEEF0A1CC102160062F744 /* ResponseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF091CC102160062F744 /* ResponseError.swift */; };
+		3DEEEF0A1CC102160062F744 /* HttpStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF091CC102160062F744 /* HttpStatus.swift */; };
 		3DEEEF0C1CC102210062F744 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF0B1CC102210062F744 /* SearchResult.swift */; };
 		3DEEEF0E1CC102370062F744 /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF0D1CC102370062F744 /* Relation.swift */; };
 		3DEEEF101CC102420062F744 /* Thing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF0F1CC102420062F744 /* Thing.swift */; };
@@ -48,7 +48,7 @@
 		3DEEEF031CC101EC0062F744 /* Customer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		3DEEEF051CC101F90062F744 /* Solution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
 		3DEEEF071CC102070062F744 /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
-		3DEEEF091CC102160062F744 /* ResponseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseError.swift; sourceTree = "<group>"; };
+		3DEEEF091CC102160062F744 /* HttpStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpStatus.swift; sourceTree = "<group>"; };
 		3DEEEF0B1CC102210062F744 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		3DEEEF0D1CC102370062F744 /* Relation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
 		3DEEEF0F1CC102420062F744 /* Thing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thing.swift; sourceTree = "<group>"; };
@@ -144,7 +144,7 @@
 				3DEEEF031CC101EC0062F744 /* Customer.swift */,
 				3DEEEF051CC101F90062F744 /* Solution.swift */,
 				3DEEEF071CC102070062F744 /* Subscription.swift */,
-				3DEEEF091CC102160062F744 /* ResponseError.swift */,
+				3DEEEF091CC102160062F744 /* HttpStatus.swift */,
 				3DEEEF0B1CC102210062F744 /* SearchResult.swift */,
 				3DEEEF0D1CC102370062F744 /* Relation.swift */,
 				3DEEEF0F1CC102420062F744 /* Thing.swift */,
@@ -308,7 +308,7 @@
 				3D37FA111CBE81AC00FD4DB7 /* ThingsKit.swift in Sources */,
 				3DEEEF041CC101EC0062F744 /* Customer.swift in Sources */,
 				3DEEEF101CC102420062F744 /* Thing.swift in Sources */,
-				3DEEEF0A1CC102160062F744 /* ResponseError.swift in Sources */,
+				3DEEEF0A1CC102160062F744 /* HttpStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
