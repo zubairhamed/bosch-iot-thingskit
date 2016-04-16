@@ -11,7 +11,7 @@ import Alamofire
 @testable import ThingsKit
 
 class ThingsKitTests: XCTestCase {
-     var tk: ThingsKit = ThingsKit(user: "xx", password: "xx", token: "xx")
+    var tk: ThingsKit = ThingsKit(user: "xx", password: "xx", token: "xx")
 
     override func setUp() {
         super.setUp()
@@ -33,7 +33,9 @@ class ThingsKitTests: XCTestCase {
         // Create things
         for _ in 0..<tc {
             exp = expectationWithDescription("ThingsCreate")
-            tk.createThing(Thing(), completion: { (createdThing) in
+            tk.createThing(Thing(), completion: {
+                (createdThing, result) in
+                
                 XCTAssertNotNil(createdThing)
                 things.append(createdThing)
                 thingsIds.append(createdThing.thingId!)
@@ -46,7 +48,9 @@ class ThingsKitTests: XCTestCase {
         // List things
         exp = expectationWithDescription("ThingsList")
         
-        tk.listThings(thingsIds) { (things) in
+        tk.listThings(thingsIds) {
+            (things, result) in
+            
             XCTAssertEqual(things.count, tc)
             exp.fulfill()
         }
@@ -56,7 +60,9 @@ class ThingsKitTests: XCTestCase {
         for i in 0..<tc {
             let id = thingsIds[i]
             exp = expectationWithDescription("ThingsCreate")
-            tk.getThing(id, completion: { (thing) in
+            tk.getThing(id, completion: {
+                (thing, result) in
+                
                 XCTAssertEqual(thing.thingId, id)
                 exp.fulfill()
             })
@@ -69,10 +75,14 @@ class ThingsKitTests: XCTestCase {
             exp = expectationWithDescription("ThingsUpdate")
             let t = things[i]
             t.attributes!["updated"] = true
-            self.tk.updateThing(id, thing: t, completion: { (success) in
-                XCTAssertTrue(success)
+            self.tk.updateThing(id, thing: t, completion: {
+                (thing, result) in
                 
-                self.tk.getThing(id, completion: { (thing) in
+                XCTAssertTrue(result.isSuccess())
+                
+                self.tk.getThing(id, completion: {
+                    (thing, result) in
+                    
                     XCTAssertEqual(thing.attributes!["updated"] as? Bool, true)
                     exp.fulfill()
                 })
@@ -84,7 +94,10 @@ class ThingsKitTests: XCTestCase {
         for i in 0..<tc {
             let id = thingsIds[i]
             exp = expectationWithDescription("ThingsDelete")
-            tk.deleteThing(id, completion: { 
+            tk.deleteThing(id, completion: {
+                (result) in
+                
+                XCTAssertTrue(result.isSuccess())
                 exp.fulfill()
             })
             waitForExpectationsWithTimeout(Double(tc) * 5.0, handler: nil)
@@ -93,7 +106,9 @@ class ThingsKitTests: XCTestCase {
         // List again, assert 0 size
         exp = expectationWithDescription("ThingsListAfterDelete")
         
-        tk.listThings(thingsIds) { (things) in
+        tk.listThings(thingsIds) {
+            (things, result) in
+            
             XCTAssertEqual(things.count, 0)
             exp.fulfill()
         }
