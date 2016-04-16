@@ -8,19 +8,23 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct SearchResult: Deserializable {
-    var items: [Thing] = []
-    var nextPageOffset: UInt = 0
+public class SearchResult: Mappable {
+    var items: [Thing]?
+    var nextPageOffset: UInt?
     
     public init() {
         
     }
-
-    public init(data: [String: AnyObject]) {
-        items <-- data["items"]
-        nextPageOffset <-- data["nextPageOffset"]
+    
+    public required init?(_ map: Map) {
+        
     }
+
+    public func mapping(map: Map) {
+        items <- map["items"]
+        nextPageOffset <- map["nextPageOffset"]
+    }    
 }
 

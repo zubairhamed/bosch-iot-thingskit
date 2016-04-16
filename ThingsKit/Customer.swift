@@ -8,20 +8,24 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct Customer: Deserializable {
-    var name: String = ""
-    var email: String = ""
-    var info: String = ""
+public class Customer: Mappable {
+    var name: String?
+    var email: String?
+    var info: String?
     
     public init() {
         
     }
     
-    public init(data: [String: AnyObject]) {
-        name <-- data["name"]
-        email <-- data["email"]
-        info <-- data["info"]
+    public required init?(_ map: Map) {
+        
     }
+    
+    public func mapping(map: Map) {
+        name <- map["name"]
+        email <- map["email"]
+        info <- map["info"]
+    }    
 }

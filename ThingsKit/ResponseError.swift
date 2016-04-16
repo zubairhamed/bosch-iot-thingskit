@@ -7,25 +7,29 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct ResponseError: Deserializable {
-    var status: UInt = 0
-    var error: String = ""
-    var message: String = ""
-    var description: String = ""
-    var href: String = ""
+public class ResponseError: Mappable {
+    var status: UInt?
+    var error: String?
+    var message: String?
+    var description: String?
+    var href: String?
     
     public init() {
         
     }
-
-    public init(data: [String: AnyObject]) {
-        status <-- data["status"]
-        error <-- data["error"]
-        message <-- data["message"]
-        description <-- data["description"]
-        href <-- data["href"]
+    
+    public required init?(_ map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        status <- map["status"]
+        error <- map["error"]
+        message <- map["message"]
+        description <- map["description"]
+        href <- map["href"]
     }
 }
 

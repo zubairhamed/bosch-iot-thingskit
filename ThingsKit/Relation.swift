@@ -8,25 +8,29 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct Relation: Deserializable {
-    var relationId: String = ""
-    var acl: [String: Acl] = [:]
-    var source: String = ""
-    var target: String = ""
-    var attributes: [String: AnyObject] = [:]
+public class Relation: Mappable {
+    var relationId: String?
+    var acl: [String: Acl]?
+    var source: String?
+    var target: String?
+    var attributes: [String: AnyObject]?
     
     public init() {
         
     }
-
-    public init(data: [String: AnyObject]) {
-        relationId <-- data["relationId"]
-        acl <-- data["acl"]
-        source <-- data["source"]
-        target <-- data["target"]
-        attributes <-- data["attributes"]
+    
+    public required init?(_ map: Map) {
+        
     }
+
+    public func mapping(map: Map) {
+        relationId <- map["relationId"]
+        acl <- map["acl"]
+        source <- map["source"]
+        target <- map["target"]
+        attributes <- map["attributes"]
+    }    
 }
 

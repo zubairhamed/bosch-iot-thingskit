@@ -7,23 +7,27 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct Thing: Deserializable {
-    var thingId: String = ""
-    var acl: [String: Acl] = [:]
-    var attributes: [String: AnyObject] = [:]
-    var features: [String: Feature] = [:]
+public class Thing: Mappable {
+    var thingId: String?
+    var acl: [String: Acl]?
+    var attributes: [String: AnyObject]?
+    var features: [String: Feature]?
     
     public init() {
         
     }
+    
+    public required init?(_ map: Map) {
+        
+    }
 
-    public init(data: [String: AnyObject]) {
-        thingId <-- data["thingId"]
-        acl <-- data["acl"]
-        attributes <-- data["attributes"]
-        features <-- data["features"]
+    public func mapping(map: Map) {
+        thingId <- map["thingId"]
+        acl <- map["acl"]
+        attributes <- map["attributes"]
+        features <- map["features"]
     }
 }
 

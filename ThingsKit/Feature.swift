@@ -7,16 +7,20 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct Feature: Deserializable {
-    var properties: [String: AnyObject] = [:]
+public class Feature: Mappable {
+    var properties: [String: AnyObject]?
     
     public init() {
         
     }
     
-    public init(data: [String: AnyObject]) {
-        properties <-- data["properties"]
+    public required init?(_ map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        properties <- map["properties"]
     }
 }

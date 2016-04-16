@@ -8,18 +8,23 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct Namespace: Deserializable {
-    var name: String = ""
-    var defaultNamespace: Bool = false
+public class Namespace: Mappable {
+    var name: String?
+    var defaultNamespace: Bool?
     
     public init() {
         
     }
-
-    public init(data: [String: AnyObject]) {
-        name <-- data["name"]
-        defaultNamespace <-- data["default"]
+    
+    public required init?(_ map: Map) {
+        
     }
+
+    public func mapping(map: Map) {
+        name <- map["name"]
+        defaultNamespace <- map["default"]
+    }
+    
 }

@@ -7,18 +7,22 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct Subscription: Deserializable {
-    var id: String = ""
-    var target: String = ""
+public class Subscription: Mappable {
+    var id: String?
+    var target: String?
     
     public init() {
         
     }
-
-    public init(data: [String: AnyObject]) {
-        id <-- data["id"]
-        target <-- data["target"]
+    
+    public required init?(_ map: Map) {
+        
     }
+    
+    public func mapping(map: Map) {
+        id <- map["id"]
+        target <- map["target"]
+    }    
 }

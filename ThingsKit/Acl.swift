@@ -8,21 +8,31 @@
 //
 
 import Foundation
-import JSONHelper
+import ObjectMapper
 
-public struct Acl: Deserializable {
-    var READ: Bool = false
-    var WRITE: Bool = false
-    var ADMINISTRATE: Bool = false
+public class Acl: Mappable {
+    var READ: Bool?
+    var WRITE: Bool?
+    var ADMINISTRATE: Bool?
     
     public init() {
         
     }
-
-    public init(data: [String: AnyObject]) {
-        READ <-- data["READ"]
-        WRITE <-- data["WRITE"]
-        ADMINISTRATE <-- data["ADMINISTRATE"]
+    
+    public required init?(_ map: Map) {
+        
     }
+        
+    public init(read: Bool, write: Bool, administrate: Bool) {
+        self.READ = read
+        self.WRITE = write
+        self.ADMINISTRATE = administrate
+    }
+    
+    public func mapping(map: Map) {
+        READ <- map["READ"]
+        WRITE <- map["WRITE"]
+        ADMINISTRATE <- map["ADMINISTRATE"]
+    }    
 }
 
