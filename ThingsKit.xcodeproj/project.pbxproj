@@ -12,7 +12,7 @@
 		3D37FA061CBE817C00FD4DB7 /* ThingsKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D37FA051CBE817C00FD4DB7 /* ThingsKitTests.swift */; };
 		3D37FA111CBE81AC00FD4DB7 /* ThingsKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D37FA101CBE81AC00FD4DB7 /* ThingsKit.swift */; };
 		3DB932C81CC284A90063A6AE /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB932C71CC284A90063A6AE /* Result.swift */; };
-		3DB932CA1CC2A7D20063A6AE /* JsonDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB932C91CC2A7D20063A6AE /* JsonDeserializer.swift */; };
+		3DB932CA1CC2A7D20063A6AE /* JsonMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB932C91CC2A7D20063A6AE /* JsonMapper.swift */; };
 		3DEEEF001CC101C80062F744 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEEFF1CC101C80062F744 /* Query.swift */; };
 		3DEEEF021CC101DD0062F744 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF011CC101DD0062F744 /* Feature.swift */; };
 		3DEEEF041CC101EC0062F744 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEEEF031CC101EC0062F744 /* Customer.swift */; };
@@ -45,7 +45,7 @@
 		3D37FA071CBE817C00FD4DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D37FA101CBE81AC00FD4DB7 /* ThingsKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingsKit.swift; sourceTree = "<group>"; };
 		3DB932C71CC284A90063A6AE /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		3DB932C91CC2A7D20063A6AE /* JsonDeserializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonDeserializer.swift; sourceTree = "<group>"; };
+		3DB932C91CC2A7D20063A6AE /* JsonMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonMapper.swift; sourceTree = "<group>"; };
 		3DEEEEFF1CC101C80062F744 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		3DEEEF011CC101DD0062F744 /* Feature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		3DEEEF031CC101EC0062F744 /* Customer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 				3D37F9F91CBE817C00FD4DB7 /* ThingsKit.h */,
 				3D37F9FB1CBE817C00FD4DB7 /* Info.plist */,
 				3D37FA101CBE81AC00FD4DB7 /* ThingsKit.swift */,
-				3DB932C91CC2A7D20063A6AE /* JsonDeserializer.swift */,
+				3DB932C91CC2A7D20063A6AE /* JsonMapper.swift */,
 			);
 			path = ThingsKit;
 			sourceTree = "<group>";
@@ -311,7 +311,7 @@
 				3D37FA111CBE81AC00FD4DB7 /* ThingsKit.swift in Sources */,
 				3DEEEF041CC101EC0062F744 /* Customer.swift in Sources */,
 				3DEEEF101CC102420062F744 /* Thing.swift in Sources */,
-				3DB932CA1CC2A7D20063A6AE /* JsonDeserializer.swift in Sources */,
+				3DB932CA1CC2A7D20063A6AE /* JsonMapper.swift in Sources */,
 				3DB932C81CC284A90063A6AE /* Result.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

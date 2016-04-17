@@ -9,13 +9,26 @@
 import Alamofire
 import ObjectMapper
 
+struct C {
+    static let defaultServiceUrl = "https://things.apps.bosch-iot-cloud.com/cr/1"
+    
+    static let Get = "GET"
+    static let Post = "POST"
+    static let Put = "PUT"
+    static let Delete = "DELETE"
+    
+    static let EmptyBody = ""
+    
+    static let HeaderApiToken = "x-cr-api-token"
+}
+
 public class ThingsKit {
     var user: String
     var password: String
     var token: String
     var endpoint: String
     
-    public init(user: String, password: String, token: String, endpoint: String = "https://things.apps.bosch-iot-cloud.com/cr/1") {
+    public init(user: String, password: String, token: String, endpoint: String = C.defaultServiceUrl) {
         self.user = user
         self.password = password
         self.token = token
@@ -33,19 +46,19 @@ public class ThingsKit {
     }
     
     private func doGet(frag: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
-        callService("GET", frag: frag, body: "", completion: completion)
+        callService(C.Get, frag: frag, body: C.EmptyBody, completion: completion)
     }
     
     private func doPost(frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
-        callService("POST", frag: frag, body: body, completion: completion)
+        callService(C.Post, frag: frag, body: body, completion: completion)
     }
 
     private func doPut(frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
-        callService("PUT", frag: frag, body: body, completion: completion)
+        callService(C.Put, frag: frag, body: body, completion: completion)
     }
     
     private func doDelete(frag: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
-        callService("DELETE", frag: frag, body: "", completion: completion)
+        callService(C.Delete, frag: frag, body: C.EmptyBody, completion: completion)
     }
     
     private func callService(method: String, frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
@@ -53,9 +66,9 @@ public class ThingsKit {
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(self.token, forHTTPHeaderField: "x-cr-api-token")
+        request.setValue(self.token, forHTTPHeaderField: C.HeaderApiToken)
         
-        if body != "" {
+        if body != C.EmptyBody {
             request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding)
         }
 
