@@ -26,11 +26,15 @@ public class Result: Mappable {
     }
     
     public required init?(_ map: Map) {
-        
+
     }
     
     public func mapping(map: Map) {
-        
+        status <- map["status"]
+        error <- map["error"]
+        message <- map["message"]
+        description <- map["description"]
+        href <- map["href"]        
     }
     
     public func isError() -> Bool {
