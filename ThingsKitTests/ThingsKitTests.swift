@@ -11,7 +11,7 @@ import Alamofire
 @testable import ThingsKit
 
 class ThingsKitTests: XCTestCase {
-    var tk: ThingsKit = ThingsKit(user: "xx", password: "xx", token: "xx")
+    var tk: ThingsKit = ThingsKit(user: "xx", password: "xx", token: "xx")    
 
     override func setUp() {
         super.setUp()
@@ -22,7 +22,7 @@ class ThingsKitTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-        
+    
     func testThingsServices() {
         var exp: XCTestExpectation = XCTestExpectation()
         
@@ -68,6 +68,14 @@ class ThingsKitTests: XCTestCase {
             })
             waitForExpectationsWithTimeout(Double(tc) * 5.0, handler: nil)
         }
+        
+//        exp = expectationWithDescription("ThingsSearch")
+//        var q: Query = Query()
+//        tk.search(q) { (searchResult, result) in
+//            XCTAssertEqual(searchResult.items?.count, 5)
+//            exp.fulfill()
+//        }
+//        waitForExpectationsWithTimeout(60.0, handler: nil)
         
         // Update Thing
         for i in 0..<tc {
@@ -119,7 +127,6 @@ class ThingsKitTests: XCTestCase {
 //    func testThingsAttributes() {}
 //    func testFeatures() {}
 //    func testRelations() {}
-//    func testSearch() {}
 //    func testMessages() {}
 //    func testSubscriptions() {}
 //    func testSolutions() {}

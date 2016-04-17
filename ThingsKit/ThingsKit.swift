@@ -598,8 +598,10 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
+                        
+            let searchResult = JsonDeserializer.parseSearchResult(response)
             
-            // TODO
+            completion(searchResult: searchResult, result: result)
         }
     }
     

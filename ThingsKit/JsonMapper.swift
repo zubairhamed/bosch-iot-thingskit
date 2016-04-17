@@ -29,7 +29,11 @@ public class JsonDeserializer {
     public static func parseAcl(response: Response<AnyObject, NSError>) -> Acl {
         return Mapper<Acl>().map(getJsonString(response))!
     }
-        
+    
+    public static func parseSearchResult (response: Response<AnyObject, NSError>) -> SearchResult {
+        return Mapper<SearchResult>().map(getJsonString(response))!
+    }
+    
     private static func getJsonString(response: Response<AnyObject, NSError>) -> String {
         return String(data: response.data!, encoding: NSUTF8StringEncoding)!
     }

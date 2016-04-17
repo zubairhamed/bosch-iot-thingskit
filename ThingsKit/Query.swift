@@ -9,5 +9,12 @@
 import Foundation
 
 public class Query {
+    var filter: String = ""
+    var options: [String] = [String]()
+    var fields: [String] = [String]()
+    var limit: Int = 25    
     
+    public init() {
+        
+    }
 }
