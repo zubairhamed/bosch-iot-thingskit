@@ -32,6 +32,22 @@ public class ThingsKit {
         return result
     }
     
+    private func doGet(frag: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
+        callService("GET", frag: frag, body: "", completion: completion)
+    }
+    
+    private func doPost(frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
+        callService("POST", frag: frag, body: body, completion: completion)
+    }
+
+    private func doPut(frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
+        callService("PUT", frag: frag, body: body, completion: completion)
+    }
+    
+    private func doDelete(frag: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
+        callService("DELETE", frag: frag, body: "", completion: completion)
+    }
+    
     private func callService(method: String, frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
         let url = self.endpoint + frag
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
@@ -51,7 +67,8 @@ public class ThingsKit {
     
     public func listThings(ids: [String], completion: (things: [Thing], result: Result) -> Void) {
         let frag = "/things?ids=\(ids.joinWithSeparator(","))"
-        self.callService("GET", frag: frag, body: "") {
+        
+        self.doGet(frag) {
             response, result in
             
             var things = [Thing]()
@@ -66,7 +83,7 @@ public class ThingsKit {
         let frag = "/things"
         let json = Mapper().toJSONString(thing)
         
-        self.callService("POST", frag: frag, body: json!) {
+        self.doPost(frag, body: json!) {
             response, result in
             
             var thing = Thing()
@@ -80,7 +97,7 @@ public class ThingsKit {
     public func deleteThing(id: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
             
             completion(result: result)
@@ -90,7 +107,7 @@ public class ThingsKit {
     public func getThing(id: String, completion: (thing: Thing, result: Result) -> Void) {
         let frag = "/things/\(id)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
             
             if result.isSuccess() {
@@ -105,7 +122,7 @@ public class ThingsKit {
         let frag = "/things/\(id)"
         let json = Mapper().toJSONString(thing)
         
-        self.callService("PUT", frag: frag, body: json!) {
+        self.doPut(frag, body: json!) {
             response, result in
             
             var thing = Thing()
@@ -121,7 +138,7 @@ public class ThingsKit {
     public func listAcl(id: String, completion: (acl: [String: Acl], result: Result) -> Void) {
         let frag = "/things/\(id)/acl"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
             
             var acl = [String: Acl]()
@@ -136,7 +153,7 @@ public class ThingsKit {
         let frag = "/things/\(id)/acl"
         let json = Mapper().toJSONString(acl)
         
-        self.callService("PUT", frag: frag, body: json!) {
+        self.doPut(frag, body: json!) {
             response, result in
             
             completion(result: result)
@@ -146,7 +163,7 @@ public class ThingsKit {
     public func deleteAclEntry(id: String, authSubject: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/acl/\(authSubject)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
             
             completion(result: result)
@@ -156,7 +173,7 @@ public class ThingsKit {
     public func getAclEntry(id: String, authSubject: String, completion: (acl: Acl, result: Result) -> Void) {
         let frag = "/things/\(id)/acl/\(authSubject)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
             
             var acl = Acl()
@@ -170,7 +187,7 @@ public class ThingsKit {
     public func updateAclEntry(id: String, authSubject: String, acl: Acl, completion: (acl: Acl, result: Result) -> Void) {
         let frag = "/things/\(id)/acl/\(authSubject)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
 
             var acl = Acl()
@@ -186,7 +203,7 @@ public class ThingsKit {
     public func deleteAttributes(id: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/attributes"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
             
             completion(result: result)
@@ -196,7 +213,7 @@ public class ThingsKit {
     public func listAttributes(id: String, completion: (attributes: [String: AnyObject], result: Result) -> Void) {
         let frag = "/things/\(id)/attributes"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
             
             // TODO
@@ -206,7 +223,7 @@ public class ThingsKit {
     public func updateAttributes(id: String, attributes: [String: AnyObject], completion: (attributes: [String: AnyObject], result: Result) -> Void) {
         let frag = "/things/\(id)/attributes"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO
@@ -216,7 +233,7 @@ public class ThingsKit {
     public func deleteAttribute(id: String, path: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/attributes/\(path)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
             
             completion(result: result)
@@ -226,7 +243,7 @@ public class ThingsKit {
     public func getAttribute(id: String, path: String, completion: (attribute: AnyObject, result: Result) -> Void) {
         let frag = "/things/\(id)/attributes/\(path)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -236,7 +253,7 @@ public class ThingsKit {
     public func updateAttribute(id: String, path: String, attribute: AnyObject, completion: (attribute: AnyObject, result: Result) -> Void) {
         let frag = "/things/\(id)/attributes/\(path)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
 
             // TODO
@@ -247,7 +264,7 @@ public class ThingsKit {
     public func deleteFeatures(id: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/features"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
             
             completion(result: result)
@@ -257,7 +274,7 @@ public class ThingsKit {
     public func listFeatures(id: String, completion: ([String: Feature], result: Result) -> Void) {
         let frag = "/things/\(id)/features"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -267,7 +284,7 @@ public class ThingsKit {
     public func updateFeatures(id: String, features: [String: AnyObject], completion: ([String: Feature], result: Result) -> Void) {
         let frag = "/things/\(id)/features"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
 
             // TODO
@@ -277,7 +294,7 @@ public class ThingsKit {
     public func deleteFeature(id: String, featureId: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
             
             completion(result: result)
@@ -287,7 +304,7 @@ public class ThingsKit {
     public func getFeature(id: String, featureId: String, completion: (feature: Feature, result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -297,7 +314,7 @@ public class ThingsKit {
     public func updateFeature(id: String, featureId: String, feature: AnyObject, completion: (feature: Feature, result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
 
             // TODO
@@ -307,7 +324,7 @@ public class ThingsKit {
     public func deleteFeatureProperties(id: String, featureId: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/properties"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
 
             completion(result: result)
@@ -317,7 +334,7 @@ public class ThingsKit {
     public func listFeatureProperties(id: String, featureId: String, completion: (properties: [String: AnyObject], result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/properties"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -327,7 +344,7 @@ public class ThingsKit {
     public func updateFeatureProperties(id: String, featureId: String, properties: [String: AnyObject], completion: (properties: [String: AnyObject], result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/properties"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
 
             // TODO
@@ -337,7 +354,7 @@ public class ThingsKit {
     public func deleteFeatureProperty(id: String, featureId: String, path: String, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/properties/\(path)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
 
             completion(result: result)
@@ -347,7 +364,7 @@ public class ThingsKit {
     public func getFeatureProperty(id: String, featureId: String, path: String, completion: (property: AnyObject, result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/properties/\(path)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
          
             // TODO
@@ -357,7 +374,7 @@ public class ThingsKit {
     public func updateFeatureProperty(id: String, featureId: String, path: String, property: AnyObject, completion: (property: AnyObject, result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/properties/\(path)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
 
             // TODO
@@ -367,7 +384,7 @@ public class ThingsKit {
     public func listRelations(ids: [String], completion: (relations: [Relation], result: Result) -> Void) {
         let frag = "/relations"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -377,7 +394,7 @@ public class ThingsKit {
     public func createRelation(relation: Relation, completion: (relation: Relation, result: Result) -> Void) {
         let frag = "/relations"
         
-        self.callService("POST", frag: frag, body: "") {
+        self.doPost(frag, body: "") {
             response, result in
             
             // TODO
@@ -387,7 +404,7 @@ public class ThingsKit {
     public func deleteRelation(id: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
             
             completion(result: result)
@@ -397,7 +414,7 @@ public class ThingsKit {
     public func getRelation(id: String, completion: (relation: Relation, result: Result) -> Void) {
         let frag = "/relations/\(id)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -407,7 +424,7 @@ public class ThingsKit {
     public func updateRelation(id: String, relation: Relation, completion: (relation: Relation, result: Result) -> Void) {
         let frag = "/relations/\(id)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO
@@ -417,7 +434,7 @@ public class ThingsKit {
     public func getRelationAcl(id: String, completion: (acl: [String: Acl], result: Result) -> Void) {
         let frag = "/relations/\(id)/acl"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
             
             // TODO
@@ -427,7 +444,7 @@ public class ThingsKit {
     public func updateRelationAcl(id: String, acl: Acl, completion: (acl: [String: Acl], result: Result) -> Void) {
         let frag = "/relations/\(id)/acl"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO
@@ -437,7 +454,7 @@ public class ThingsKit {
     public func deleteRelationAclEntry(id: String, subject: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/acl/\(subject)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
 
             completion(result: result)
@@ -447,7 +464,7 @@ public class ThingsKit {
     public func getRelationAclEntry(id: String, subject: String, completion: (acl: Acl, result: Result) -> Void) {
         let frag = "/relations/\(id)/acl/\(subject)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -457,7 +474,7 @@ public class ThingsKit {
     public func updateRelationAclEntry(id: String, subject: String, acl: Acl, completion: (acl: Acl, result: Result) -> Void) {
         let frag = "/relations/\(id)/acl/\(subject)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO
@@ -467,7 +484,7 @@ public class ThingsKit {
     public func getRelationSource(id: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/source"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -477,7 +494,7 @@ public class ThingsKit {
     public func updateRelationSource(id: String, source: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/source"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
         }
@@ -486,7 +503,7 @@ public class ThingsKit {
     public func getRelationTarget(id: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/target"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -496,7 +513,7 @@ public class ThingsKit {
     public func updateRelationTarget(id: String, source: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/target"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO
@@ -506,7 +523,7 @@ public class ThingsKit {
     public func deleteRelationAttributes(id: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/attributes"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
 
             completion(result: result)
@@ -516,7 +533,7 @@ public class ThingsKit {
     public func listRelationAttributes(id: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/attributes"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -526,7 +543,7 @@ public class ThingsKit {
     public func updateRelationAttributes(id: String, attributes: [String: AnyObject], completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/attributes"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO
@@ -536,7 +553,7 @@ public class ThingsKit {
     public func deleteRelationAttribute(id: String, path: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/attributes/\(path)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
 
             completion(result: result)
@@ -546,7 +563,7 @@ public class ThingsKit {
     public func getRelationAttribute(id: String, path: String, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/attributes/\(path)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
             
             // TODO
@@ -556,7 +573,7 @@ public class ThingsKit {
     public func updateRelationAttribute(id: String, path: String, attribute: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/relations/\(id)/attributes/\(path)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO
@@ -566,7 +583,7 @@ public class ThingsKit {
     public func search(query: Query, completion: (searchResult: SearchResult, result: Result) -> Void) {
         let frag = "/search/things"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
             
             // TODO
@@ -576,7 +593,7 @@ public class ThingsKit {
     public func claimThing(id: String, timeout: UInt, payload: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/inbox/claim"
         
-        self.callService("POST", frag: frag, body: "") {
+        self.doPost(frag, body: "") {
             response, result in
             
             // TODO
@@ -586,7 +603,7 @@ public class ThingsKit {
     public func sendMessageToThing(id: String, messageSubject: String, payload: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/inbox/messages/\(messageSubject)"
         
-        self.callService("POST", frag: frag, body: "") {
+        self.doPost(frag, body: "") {
             response, result in
             
             // TODO
@@ -596,7 +613,7 @@ public class ThingsKit {
     public func sendMessageFromThing(id: String, messageSubject: String, payload: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/outbox/messages/\(messageSubject)"
         
-        self.callService("POST", frag: frag, body: "") {
+        self.doPost(frag, body: "") {
             response, result in
             
             // TODO
@@ -606,7 +623,7 @@ public class ThingsKit {
     public func sendMessageToThingFeature(id: String, featureId: String, messageSubject: String, payload: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/inbox/messages/\(messageSubject)"
         
-        self.callService("POST", frag: frag, body: "") {
+        self.doPost(frag, body: "") {
             response, result in
             
             // TODO
@@ -616,7 +633,7 @@ public class ThingsKit {
     public func sendMessageFromThingFeature(id: String, featureId: String, messageSubject: String, payload: AnyObject, completion: (result: Result) -> Void) {
         let frag = "/things/\(id)/features/\(featureId)/outbox/messages/\(messageSubject)"
         
-        self.callService("POST", frag: frag, body: "") {
+        self.doPost(frag, body: "") {
             response, result in
             
             // TODO
@@ -626,7 +643,7 @@ public class ThingsKit {
     public func listSubscriptions( completion: (subscriptions: [Subscription], result: Result) -> Void) {
         let frag = "/subscriptions"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -636,7 +653,7 @@ public class ThingsKit {
     public func createSubscription(subscription: Subscription, completion: (subscription: Subscription, result: Result) -> Void) {
         let frag = "/subscriptions"
         
-        self.callService("POST", frag: frag, body: "") {
+        self.doPost(frag, body: "") {
             response, result in
             
             // TODO
@@ -646,7 +663,7 @@ public class ThingsKit {
     public func deleteSubscription(id: String, completion: (result: Result) -> Void) {
         let frag = "/subscriptions/(id)"
         
-        self.callService("DELETE", frag: frag, body: "") {
+        self.doDelete(frag) {
             response, result in
 
             completion(result: result)
@@ -656,7 +673,7 @@ public class ThingsKit {
     public func getSubscription(id: String, completion: (subscription: Subscription, result: Result) -> Void) {
         let frag = "/subscriptions/(id)"
         
-        self.callService("GET", frag: frag, body: "") {
+        self.doGet(frag) {
             response, result in
 
             // TODO
@@ -666,7 +683,7 @@ public class ThingsKit {
     public func updateSubscription(id: String, subscription: Subscription, completion: (result: Result) -> Void) {
         let frag = "/subscriptions/(id)"
         
-        self.callService("PUT", frag: frag, body: "") {
+        self.doPut(frag, body: "") {
             response, result in
             
             // TODO

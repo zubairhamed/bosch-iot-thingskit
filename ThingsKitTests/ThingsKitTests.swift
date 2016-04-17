@@ -35,7 +35,7 @@ class ThingsKitTests: XCTestCase {
             exp = expectationWithDescription("ThingsCreate")
             tk.createThing(Thing(), completion: {
                 (createdThing, result) in
-                                
+                
                 XCTAssertNotNil(createdThing)
                 things.append(createdThing)
                 thingsIds.append(createdThing.thingId!)
