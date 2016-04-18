@@ -33,6 +33,10 @@ public class JsonDeserializer {
     public static func parseSearchResult (response: Response<AnyObject, NSError>) -> SearchResult {
         return Mapper<SearchResult>().map(getJsonString(response))!
     }
+
+    private static func parseSubscription(response: Response<AnyObject, NSError>) -> Subscription {
+        return Mapper<Subscription>().map(getJsonString(response))!
+    }
     
     private static func getJsonString(response: Response<AnyObject, NSError>) -> String {
         return String(data: response.data!, encoding: NSUTF8StringEncoding)!
