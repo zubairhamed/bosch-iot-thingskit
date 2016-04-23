@@ -10,10 +10,10 @@ import Foundation
 import ObjectMapper
 
 public class Thing: Mappable {
-    var thingId: String?
-    var acl: [String: Acl]? = [:]
-    var attributes: [String: AnyObject]? = [:]
-    var features: [String: Feature]? = [:]
+    public var thingId: String?
+    public var acl: [String: Acl]? = [:]
+    public var attributes: [String: AnyObject]? = [:]
+    public var features: [String: Feature]? = [:]
     
     public init() {
         
