@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "6.0"
   s.source       = { :git => "https://github.com/zubairhamed/bosch-iot-thingskit.git", :tag => "1.0.0" }
   s.source_files  = "ThingsKit/**"
-  s.dependency = "Alamofire"
-  s.dependency = "ObjectMapper"
+  s.dependency  "Alamofire"
+  s.dependency  "ObjectMapper"
   s.requires_arc = true
 end
