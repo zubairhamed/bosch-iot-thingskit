@@ -22,7 +22,7 @@ public class Thing: Mappable {
     public required init?(_ map: Map) {
         
     }
-
+    
     public func mapping(map: Map) {
         thingId <- map["thingId"]
         acl <- map["acl"]

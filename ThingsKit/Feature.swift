@@ -10,7 +10,7 @@ import Foundation
 import ObjectMapper
 
 public class Feature: Mappable {
-    var properties: [String: AnyObject]?
+    public var featureProperties: [String: AnyObject] = [String: AnyObject]()
     
     public init() {
         
@@ -21,6 +21,6 @@ public class Feature: Mappable {
     }
     
     public func mapping(map: Map) {
-        properties <- map["properties"]
+        featureProperties <- map["properties"]
     }
 }

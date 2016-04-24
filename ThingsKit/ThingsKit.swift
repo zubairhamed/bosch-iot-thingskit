@@ -52,7 +52,7 @@ public class ThingsKit {
     private func doPost(frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
         callService(C.Post, frag: frag, body: body, completion: completion)
     }
-
+    
     private func doPut(frag: String, body: String, completion: (Response<AnyObject, NSError>, Result) -> Void) {
         callService(C.Put, frag: frag, body: body, completion: completion)
     }
@@ -71,7 +71,7 @@ public class ThingsKit {
         if body != C.EmptyBody {
             request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding)
         }
-
+        
         Alamofire.request(request).authenticate(user: self.user, password: self.password).responseJSON { (response) in
             let result = self.createResult(response)
             completion(response, result)
@@ -202,7 +202,7 @@ public class ThingsKit {
         
         self.doPut(frag, body: "") {
             response, result in
-
+            
             var acl = Acl()
             if result.isSuccess() {
                 if result.code == 201 {
@@ -258,7 +258,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -268,7 +268,7 @@ public class ThingsKit {
         
         self.doPut(frag, body: "") {
             response, result in
-
+            
             // TODO
         }
     }
@@ -289,7 +289,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -299,7 +299,7 @@ public class ThingsKit {
         
         self.doPut(frag, body: "") {
             response, result in
-
+            
             // TODO
         }
     }
@@ -319,7 +319,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -329,7 +329,7 @@ public class ThingsKit {
         
         self.doPut(frag, body: "") {
             response, result in
-
+            
             // TODO
         }
     }
@@ -339,7 +339,7 @@ public class ThingsKit {
         
         self.doDelete(frag) {
             response, result in
-
+            
             completion(result: result)
         }
     }
@@ -349,7 +349,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -359,7 +359,7 @@ public class ThingsKit {
         
         self.doPut(frag, body: "") {
             response, result in
-
+            
             // TODO
         }
     }
@@ -369,7 +369,7 @@ public class ThingsKit {
         
         self.doDelete(frag) {
             response, result in
-
+            
             completion(result: result)
         }
     }
@@ -379,7 +379,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-         
+            
             // TODO
         }
     }
@@ -389,7 +389,7 @@ public class ThingsKit {
         
         self.doPut(frag, body: "") {
             response, result in
-
+            
             // TODO
         }
     }
@@ -399,7 +399,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -429,7 +429,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -469,7 +469,7 @@ public class ThingsKit {
         
         self.doDelete(frag) {
             response, result in
-
+            
             completion(result: result)
         }
     }
@@ -479,7 +479,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -499,7 +499,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -518,7 +518,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -538,7 +538,7 @@ public class ThingsKit {
         
         self.doDelete(frag) {
             response, result in
-
+            
             completion(result: result)
         }
     }
@@ -548,7 +548,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -568,7 +568,7 @@ public class ThingsKit {
         
         self.doDelete(frag) {
             response, result in
-
+            
             completion(result: result)
         }
     }
@@ -598,7 +598,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-                        
+            
             let searchResult = JsonDeserializer.parseSearchResult(response)
             
             completion(searchResult: searchResult, result: result)
@@ -660,7 +660,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
@@ -680,7 +680,7 @@ public class ThingsKit {
         
         self.doDelete(frag) {
             response, result in
-
+            
             completion(result: result)
         }
     }
@@ -690,7 +690,7 @@ public class ThingsKit {
         
         self.doGet(frag) {
             response, result in
-
+            
             // TODO
         }
     }
